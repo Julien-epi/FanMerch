@@ -7,7 +7,8 @@ export interface CartItem {
   name: string;
   price: number;
   priceInCHZ: number;
-  priceInFanToken?: number;
+  priceInFanToken: number;
+  fanTokenAddress: string;
   image: string;
   category: string;
   teamId?: string;
@@ -21,9 +22,10 @@ export interface CartState {
   totalItems: number;
   totalPrice: number;
   totalPriceInCHZ: number;
+  totalPriceInFanToken: number;
 }
 
-export type PaymentMethod = 'CHZ' | 'FAN_TOKEN' | 'EUR';
+export type PaymentMethod = 'CHZ' | 'FAN_TOKEN';
 
 // Actions
 type CartAction =
@@ -42,6 +44,7 @@ const initialState: CartState = {
   totalItems: 0,
   totalPrice: 0,
   totalPriceInCHZ: 0,
+  totalPriceInFanToken: 0,
 };
 
 // Reducer
@@ -64,6 +67,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       const totalItems = updatedItems.reduce((sum, item) => sum + item.quantity, 0);
       const totalPrice = updatedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
       const totalPriceInCHZ = updatedItems.reduce((sum, item) => sum + (item.priceInCHZ * item.quantity), 0);
+      const totalPriceInFanToken = updatedItems.reduce((sum, item) => sum + (item.priceInFanToken * item.quantity), 0);
 
       return {
         ...state,
@@ -71,6 +75,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
         totalItems,
         totalPrice,
         totalPriceInCHZ,
+        totalPriceInFanToken,
       };
     }
 
@@ -79,6 +84,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       const totalItems = updatedItems.reduce((sum, item) => sum + item.quantity, 0);
       const totalPrice = updatedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
       const totalPriceInCHZ = updatedItems.reduce((sum, item) => sum + (item.priceInCHZ * item.quantity), 0);
+      const totalPriceInFanToken = updatedItems.reduce((sum, item) => sum + (item.priceInFanToken * item.quantity), 0);
 
       return {
         ...state,
@@ -86,6 +92,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
         totalItems,
         totalPrice,
         totalPriceInCHZ,
+        totalPriceInFanToken,
       };
     }
 
@@ -99,6 +106,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       const totalItems = updatedItems.reduce((sum, item) => sum + item.quantity, 0);
       const totalPrice = updatedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
       const totalPriceInCHZ = updatedItems.reduce((sum, item) => sum + (item.priceInCHZ * item.quantity), 0);
+      const totalPriceInFanToken = updatedItems.reduce((sum, item) => sum + (item.priceInFanToken * item.quantity), 0);
 
       return {
         ...state,
@@ -106,6 +114,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
         totalItems,
         totalPrice,
         totalPriceInCHZ,
+        totalPriceInFanToken,
       };
     }
 

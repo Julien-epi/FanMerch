@@ -10,8 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@reown/appkit": "^1.7.13",
-    "@reown/appkit-adapter-wagmi": "^1.7.13",
     "@tailwindcss/vite": "^4.1.11",
     "@tanstack/react-query": "^5.83.0",
     "@types/react-router-dom": "^5.3.3",

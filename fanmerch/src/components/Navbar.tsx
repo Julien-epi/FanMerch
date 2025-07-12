@@ -34,7 +34,8 @@ const Navbar: React.FC = () => {
   }, [isMegaMenuOpen]);
 
   const navigationItems = [
-    { name: 'Boutique', href: '#boutique', mega: true },
+    { name: 'Shop', href: '#boutique', mega: true },
+    ...(isConnected ? [{ name: 'My Purchases', href: '/my-purchases', mega: false }] : []),
     { name: 'Admin', href: '/admin', mega: false },
   ];
 
@@ -84,7 +85,7 @@ const Navbar: React.FC = () => {
               <button
                 onClick={toggleCart}
                 className="relative p-2 text-gray-300 hover:text-white transition-colors focus:outline-none hover:bg-red-600/10 rounded-lg"
-                aria-label="Panier"
+                aria-label="Cart"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13h10M13 13v6a1 1 0 01-1 1H9a1 1 0 01-1-1v-6m4-6V7a1 1 0 00-1-1H9a1 1 0 00-1 1v0" />
@@ -104,7 +105,7 @@ const Navbar: React.FC = () => {
                 <button
                   onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                   className="text-white hover:text-red-400 focus:outline-none transition-colors duration-200"
-                  aria-label="Ouvrir le menu"
+                  aria-label="Open menu"
                 >
                   <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     {isMobileMenuOpen ? (

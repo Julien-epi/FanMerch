@@ -21,7 +21,7 @@ const MegaMenuBoutique: React.FC<MegaMenuBoutiqueProps> = ({ onClose }) => {
         setTeams(data);
         setError(null);
       } catch (err) {
-        setError('Erreur lors du chargement des équipes');
+        setError('Error loading teams');
         console.error(err);
       } finally {
         setLoading(false);
@@ -181,7 +181,7 @@ const MegaMenuBoutique: React.FC<MegaMenuBoutiqueProps> = ({ onClose }) => {
                 <div>
                   <h2 className="text-lg font-bold text-white">{selectedSport}</h2>
                   <p className="text-xs text-gray-400">
-                    {selectedSportData.teams.length} équipe{selectedSportData.teams.length > 1 ? 's' : ''}
+                    {selectedSportData.teams.length} team{selectedSportData.teams.length > 1 ? 's' : ''}
                   </p>
                 </div>
               </div>

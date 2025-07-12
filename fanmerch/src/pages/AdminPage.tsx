@@ -5,7 +5,7 @@ import { CONTRACT_ADDRESSES, ABIS } from '../config';
 import { uploadToPinata } from '../config/uploadConfig';
 import Navbar from '../components/Navbar';
 
-// Popup de confirmation modale
+// Confirmation modal popup
 const ConfirmationModal: React.FC<{
   isOpen: boolean;
   onClose: () => void;
@@ -51,7 +51,7 @@ const ConfirmationModal: React.FC<{
           
           {txHash && (
             <div className="mb-4">
-              <p className="text-xs text-gray-400 mb-2">Hash de transaction :</p>
+              <p className="text-xs text-gray-400 mb-2">Transaction Hash:</p>
               <p className="text-xs text-blue-400 font-mono break-all">{txHash}</p>
             </div>
           )}
@@ -60,7 +60,7 @@ const ConfirmationModal: React.FC<{
             onClick={onClose}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-medium transition-colors"
           >
-            Fermer
+            Close
           </button>
         </div>
       </div>
@@ -90,7 +90,7 @@ const AdminPage: React.FC = () => {
   const [uploadingImage, setUploadingImage] = useState(false);
   const [ipfsUrl, setIpfsUrl] = useState<string>('');
 
-  // États pour la popup de confirmation
+  // States for confirmation popup
   const [modal, setModal] = useState<{
     isOpen: boolean;
     status: 'success' | 'error' | 'partial';
@@ -119,18 +119,18 @@ const AdminPage: React.FC = () => {
     const file = e.target.files?.[0];
     if (file) {
       if (file.size > 5 * 1024 * 1024) { // 5MB limit
-        alert('Le fichier est trop volumineux. Maximum 5MB.');
+        alert('File is too large. Maximum 5MB.');
         return;
       }
       
       if (!file.type.startsWith('image/')) {
-        alert('Veuillez sélectionner un fichier image.');
+        alert('Please select an image file.');
         return;
       }
       
       setImageFile(file);
       
-      // Créer une prévisualisation
+      // Create preview
       const reader = new FileReader();
       reader.onload = (e) => {
         setImagePreview(e.target?.result as string);
@@ -145,9 +145,9 @@ const AdminPage: React.FC = () => {
       setModal({
         isOpen: true,
         status: 'error',
-        title: 'Wallet non connecté',
-        message: 'Veuillez connecter votre wallet pour ajouter des produits.',
-        details: 'Utilisez le bouton de connexion dans la barre de navigation.'
+        title: 'Wallet Not Connected',
+        message: 'Please connect your wallet to add products.',
+        details: 'Use the connect button in the navigation bar.'
       });
       return;
     }
@@ -156,9 +156,9 @@ const AdminPage: React.FC = () => {
       setModal({
         isOpen: true,
         status: 'error',
-        title: 'Image requise',
-        message: 'Veuillez sélectionner une image pour le produit.',
-        details: 'L\'image sera stockée de manière permanente sur IPFS.'
+        title: 'Image Required',
+        message: 'Please select an image for the product.',
+        details: 'The image will be stored permanently on IPFS.'
       });
       return;
     }
@@ -166,14 +166,14 @@ const AdminPage: React.FC = () => {
     try {
       setUploadingImage(true);
       
-      // Upload direct sur Pinata IPFS
+      // Direct upload to Pinata IPFS
       const uploadedUrl = await uploadToPinata(imageFile);
-      console.log('✅ Image uploadée sur IPFS:', uploadedUrl);
+      console.log('✅ Image uploaded to IPFS:', uploadedUrl);
       setIpfsUrl(uploadedUrl);
       
       setUploadingImage(false);
       
-      // Convertir les prix
+      // Convert prices
       const priceInCHZ = parseEther(formData.priceInCHZ);
       const priceInFanToken = BigInt(parseInt(formData.priceInFanToken));
 
@@ -194,42 +194,42 @@ const AdminPage: React.FC = () => {
       
     } catch (error) {
       setUploadingImage(false);
-      console.error('Erreur:', error);
+      console.error('Error:', error);
       
-      let errorMessage = 'Une erreur inattendue s\'est produite';
+      let errorMessage = 'An unexpected error occurred';
       let errorDetails = '';
       
       if (error instanceof Error) {
         errorMessage = error.message;
-        if (error.message.includes('Configurez votre JWT Token')) {
-          errorDetails = 'Ajoutez votre JWT Token Pinata dans uploadConfig.ts';
+        if (error.message.includes('Configure your JWT Token')) {
+          errorDetails = 'Add your Pinata JWT Token in uploadConfig.ts';
         }
       }
       
       setModal({
         isOpen: true,
         status: 'error',
-        title: 'Erreur d\'upload IPFS',
+        title: 'IPFS Upload Error',
         message: errorMessage,
         details: errorDetails
       });
     }
   };
 
-  // Gérer les résultats de la transaction
+  // Handle transaction results
   React.useEffect(() => {
     if (hash && isConfirmed) {
-      // Succès complet : IPFS + Blockchain
+      // Complete success: IPFS + Blockchain
       setModal({
         isOpen: true,
         status: 'success',
-        title: 'Produit ajouté avec succès !',
-        message: 'Le produit a été ajouté avec succès sur IPFS et la blockchain.',
-        details: `Image stockée sur IPFS : ${ipfsUrl}`,
+        title: 'Product Added Successfully!',
+        message: 'The product has been successfully added to IPFS and blockchain.',
+        details: `Image stored on IPFS: ${ipfsUrl}`,
         txHash: hash
       });
       
-      // Réinitialiser le formulaire
+      // Reset form
       setFormData({
         name: '',
         category: '',
@@ -244,23 +244,23 @@ const AdminPage: React.FC = () => {
       setIpfsUrl('');
       
     } else if (hash && isConfirmError) {
-      // Erreur blockchain mais IPFS OK
+      // Blockchain error but IPFS OK
       setModal({
         isOpen: true,
         status: 'partial',
-        title: 'Problème de blockchain',
-        message: 'L\'image a été uploadée sur IPFS mais la transaction blockchain a échoué.',
-        details: 'Vérifiez les logs de la transaction pour plus de détails.',
+        title: 'Blockchain Problem',
+        message: 'Image was uploaded to IPFS but the blockchain transaction failed.',
+        details: 'Check the transaction logs for more details.',
         txHash: hash
       });
     } else if (error && !hash) {
-      // Erreur complète
+      // Complete error
       setModal({
         isOpen: true,
         status: 'error',
-        title: 'Erreur de transaction',
-        message: 'Impossible d\'envoyer la transaction à la blockchain.',
-        details: error.message || 'Erreur inconnue'
+        title: 'Transaction Error',
+        message: 'Unable to send transaction to blockchain.',
+        details: error.message || 'Unknown error'
       });
     }
   }, [hash, isConfirmed, isConfirmError, error, ipfsUrl]);
@@ -271,13 +271,13 @@ const AdminPage: React.FC = () => {
 
   const categories = [
     'Jerseys',
-    'Sweats',
+    'Hoodies',
     'T-Shirts',
-    'Accessoires',
-    'Chaussures',
-    'Casquettes',
-    'Écharpes',
-    'Collectors'
+    'Accessories',
+    'Shoes',
+    'Caps',
+    'Scarves',
+    'Collectibles'
   ];
 
   const isLoading = isPending || uploadingImage;
@@ -289,34 +289,34 @@ const AdminPage: React.FC = () => {
       <div className="pt-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           
-          {/* En-tête */}
+          {/* Header */}
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-white mb-2">
-              🛠️ Administration - Ajouter un Produit
+              🛠️ Administration - Add Product
             </h1>
             <p className="text-gray-400">
-              Ajoutez des vêtements collector à la marketplace décentralisée
+              Add collector items to the decentralized marketplace
             </p>
             <p className="text-gray-500 text-sm mt-2">
-              📡 Images stockées sur Pinata IPFS pour un stockage permanent et décentralisé
+              📡 Images stored on Pinata IPFS for permanent and decentralized storage
             </p>
             {!isConnected && (
               <div className="mt-4 p-3 bg-yellow-800 border border-yellow-600 rounded-lg">
                 <p className="text-yellow-200 text-sm">
-                  ⚠️ Veuillez connecter votre wallet pour ajouter des produits
+                  ⚠️ Please connect your wallet to add products
                 </p>
               </div>
             )}
           </div>
 
-          {/* Formulaire d'ajout */}
+          {/* Add form */}
           <div className="bg-gray-800 rounded-lg p-6 mb-8">
             <form onSubmit={addProduct} className="space-y-6">
               
-              {/* Nom du produit */}
+              {/* Product name */}
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Nom du produit *
+                  Product Name *
                 </label>
                 <input
                   type="text"
@@ -324,15 +324,15 @@ const AdminPage: React.FC = () => {
                   value={formData.name}
                   onChange={handleInputChange}
                   required
-                  placeholder="Ex: Maillot PSG Collector 2024"
+                  placeholder="Ex: PSG Collector Jersey 2024"
                   className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
-              {/* Catégorie */}
+              {/* Category */}
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Catégorie *
+                  Category *
                 </label>
                 <select
                   name="category"
@@ -341,18 +341,18 @@ const AdminPage: React.FC = () => {
                   required
                   className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value="">Sélectionnez une catégorie</option>
+                  <option value="">Select a category</option>
                   {categories.map(cat => (
                     <option key={cat} value={cat}>{cat}</option>
                   ))}
                 </select>
               </div>
 
-              {/* Prix */}
+              {/* Prices */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Prix en CHZ *
+                    Price in CHZ *
                   </label>
                   <input
                     type="number"
@@ -367,7 +367,7 @@ const AdminPage: React.FC = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Prix en PSG Token *
+                    Price in PSG Token *
                   </label>
                   <input
                     type="number"
@@ -381,10 +381,10 @@ const AdminPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Adresse du Fan Token */}
+              {/* Fan Token Address */}
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Adresse du Fan Token *
+                  Fan Token Address *
                 </label>
                 <input
                   type="text"
@@ -396,14 +396,14 @@ const AdminPage: React.FC = () => {
                   className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <p className="text-xs text-gray-400 mt-1">
-                  Adresse du contrat PSG Token (pré-remplie)
+                  PSG Token contract address (pre-filled)
                 </p>
               </div>
 
-              {/* Minimum de fan tokens requis */}
+              {/* Minimum fan tokens required */}
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Minimum de fan tokens requis <span className="text-purple-400">(Exclusivité)</span>
+                  Minimum fan tokens required <span className="text-purple-400">(Exclusivity)</span>
                 </label>
                 <input
                   type="number"
@@ -415,17 +415,17 @@ const AdminPage: React.FC = () => {
                   className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
                 <p className="text-xs text-gray-400 mt-1">
-                  Si 0 = accessible à tous | Si &gt; 0 = minimum de PSG tokens requis pour acheter
+                  If 0 = accessible to all | If &gt; 0 = minimum PSG tokens required to buy
                 </p>
                 <div className="mt-2 text-xs text-gray-500">
-                  💡 Exemples : 0 (tout le monde), 25 (supporters), 50 (premium), 100 (VIP)
+                  💡 Examples: 0 (everyone), 25 (supporters), 50 (premium), 100 (VIP)
                 </div>
               </div>
 
-              {/* Upload d'image */}
+              {/* Image upload */}
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Image du produit * <span className="text-purple-400">(Pinata IPFS)</span>
+                  Product Image * <span className="text-purple-400">(Pinata IPFS)</span>
                 </label>
                 <div className="flex items-center space-x-4">
                   <div className="flex-1">
@@ -448,11 +448,11 @@ const AdminPage: React.FC = () => {
                   )}
                 </div>
                 <p className="text-xs text-gray-400 mt-1">
-                  Formats acceptés: JPG, PNG, GIF (max 5MB) - Stockage permanent sur Pinata IPFS
+                  Accepted formats: JPG, PNG, GIF (max 5MB) - Permanent storage on Pinata IPFS
                 </p>
               </div>
 
-              {/* Bouton d'ajout */}
+              {/* Add button */}
               <button
                 type="submit"
                 disabled={!isConnected || isLoading || !imageFile}
@@ -462,17 +462,17 @@ const AdminPage: React.FC = () => {
                     : 'bg-gray-600 text-gray-400 cursor-not-allowed'
                 }`}
               >
-                {uploadingImage ? '📡 Upload Pinata IPFS...' : 
-                 isPending ? '⏳ Ajout en cours...' : 
-                 '✅ Ajouter le Produit'}
+                {uploadingImage ? '📡 Uploading to Pinata IPFS...' : 
+                 isPending ? '⏳ Adding Product...' : 
+                 '✅ Add Product'}
               </button>
             </form>
           </div>
 
-          {/* Aperçu du produit */}
+          {/* Product preview */}
           {formData.name && imagePreview && (
             <div className="bg-gray-800 rounded-lg p-6">
-              <h3 className="text-xl font-bold text-white mb-4">📦 Aperçu du Produit</h3>
+              <h3 className="text-xl font-bold text-white mb-4">📦 Product Preview</h3>
               <div className="bg-gray-700 rounded-lg p-4 max-w-sm">
                 <img 
                   src={imagePreview} 
@@ -488,7 +488,7 @@ const AdminPage: React.FC = () => {
                 {formData.minFanTokenBalance && parseInt(formData.minFanTokenBalance) > 0 && (
                   <div className="mt-2 text-center">
                     <span className="text-purple-400 text-sm font-medium bg-purple-900 px-2 py-1 rounded">
-                      🔒 {formData.minFanTokenBalance} PSG requis
+                      🔒 {formData.minFanTokenBalance} PSG required
                     </span>
                   </div>
                 )}
@@ -498,7 +498,7 @@ const AdminPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Popup de confirmation */}
+      {/* Confirmation popup */}
       <ConfirmationModal
         isOpen={modal.isOpen}
         onClose={closeModal}

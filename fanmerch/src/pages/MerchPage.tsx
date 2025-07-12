@@ -94,6 +94,7 @@ const MerchPage: React.FC = () => {
       price: parseFloat(product.priceInCHZ),
       priceInCHZ: parseFloat(product.priceInCHZ),
       priceInFanToken: product.priceInFanToken,
+      fanTokenAddress: product.fanTokenAddress,
       image: product.image,
       category: product.category,
       teamId: teamId,
@@ -121,17 +122,17 @@ const MerchPage: React.FC = () => {
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
-                <span>Retour</span>
+                <span>Back</span>
               </button>
               
               <div className="h-6 w-px bg-gray-600"></div>
               
               <div>
-                <h1 className="text-xl font-bold text-white">
-                  Boutique Officielle
-                </h1>
+                <p className="text-xl font-semibold text-white">
+                  Official Shop
+                </p>
                 <p className="text-sm text-gray-400">
-                  {teamId ? `Équipe ${teamId}` : 'Merchandising'} • {products.length} produits
+                                      {teamId ? `Team ${teamId}` : 'Merchandising'} • {products.length} products
                 </p>
               </div>
             </div>
@@ -161,8 +162,8 @@ const MerchPage: React.FC = () => {
           <div className="flex items-center justify-between">
             <p className="text-xs text-gray-400">
               {contractProducts.length > 0 
-                ? `📡 ${contractProducts.length} produits récupérés du smart contract`
-                : '📭 Aucun produit dans le smart contract - utilisez la page admin pour ajouter des produits'
+                ? `📡 ${contractProducts.length} products retrieved from smart contract`
+                : '📭 No products in smart contract - use admin page to add products'
               }
             </p>
             {isConnected && (
@@ -210,9 +211,9 @@ const MerchPage: React.FC = () => {
               <svg className="w-16 h-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
               </svg>
-              <h3 className="text-lg font-medium text-gray-300">Aucun produit trouvé</h3>
+              <h3 className="text-lg font-medium text-gray-300">No products found</h3>
               <p className="text-gray-500">
-                Aucun produit disponible
+                No products available
               </p>
             </div>
           </div>
@@ -230,7 +231,10 @@ const MerchPage: React.FC = () => {
                   alt={product.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
                     onError={(e) => {
-                      e.currentTarget.src = 'https://via.placeholder.com/400x400?text=Image+Non+Trouvée';
+                      // Éviter la boucle infinie en ne remplaçant qu'une seule fois
+                      if (!e.currentTarget.src.includes('data:image')) {
+                        e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDQwMCA0MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIiBmaWxsPSIjMzc0MTUxIi8+CjxwYXRoIGQ9Ik0xNzUgMTUwaDUwdjEwMGgtNTB2LTEwMHoiIGZpbGw9IiM2QjcyODAiLz4KPHN2ZyB4PSIxODciIHk9IjE4NyIgd2lkdGg9IjI2IiBoZWlnaHQ9IjI2IiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9IiM2QjcyODAiPgo8cGF0aCBkPSJNMTIgMkM2LjQ4IDIgMiA2LjQ4IDIgMTJzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwUzE3LjUyIDIgMTIgMnoiLz4KPHN2ZyB4PSI4IiB5PSI4IiB3aWR0aD0iOCIgaGVpZ2h0PSI4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9IiNGRkZGRkYiPgo8cGF0aCBkPSJNMTIgMkM2LjQ4IDIgMiA2LjQ4IDIgMTJzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwUzE3LjUyIDIgMTIgMnptLTIgMTVsLTUtNSAxLjQxLTEuNDFMMTAgMTQuMTdsNy41OS03LjU5TDE5IDhsLTkgOXoiLz4KPC9zdmc+Cjwvc3ZnPgo8dGV4dCB4PSIyMDAiIHk9IjI4MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzZCNzI4MCIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2Ij5JbWFnZSBub24gZGlzcG9uaWJsZTwvdGV4dD4KPC9zdmc+';
+                      }
                     }}
                 />
               </div>
@@ -297,7 +301,7 @@ const MerchPage: React.FC = () => {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13h10M13 13v6a1 1 0 01-1 1H9a1 1 0 01-1-1v-6m4-6V7a1 1 0 00-1-1H9a1 1 0 00-1 1v0" />
                         </svg>
                         <span>
-                          {access.canAccess ? 'Ajouter au panier' : '🔒 Accès refusé'}
+                          {access.canAccess ? 'Add to cart' : '🔒 Access denied'}
                         </span>
                    </button>
                     );

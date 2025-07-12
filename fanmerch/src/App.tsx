@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import MerchPage from './pages/MerchPage';
 import AdminPage from './pages/AdminPage';
+import PurchaseHistoryPage from './pages/PurchaseHistoryPage';
 import CartPopup from './components/CartPopup';
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/merch/:teamId" element={<MerchPage />} />
         <Route path="/admin" element={<AdminPage />} />
+        <Route path="/my-purchases" element={<PurchaseHistoryPage />} />
       </Routes>
       
       {/* Cart Popup Global - accessible sur toutes les pages */}
