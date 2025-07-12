@@ -1,0 +1,14 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+solc_version = "0.8.19"
+evm_version = "shanghai"
+
+[rpc_endpoints]
+chiliz_spicy = "https://spicy-rpc.chiliz.com"
+
+[etherscan]
+chiliz_spicy = { key = "dummy", url = "https://spicy-explorer.chiliz.com" }
+
+# See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
