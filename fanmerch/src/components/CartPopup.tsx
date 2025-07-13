@@ -197,16 +197,13 @@ const CartPopup: React.FC = () => {
       };
       localStorage.setItem('fanmerch_tx_hashes', JSON.stringify(existingTxHashes));
       
-      // Réinitialiser l'adresse pour le prochain achat seulement si le panier est vide
-      if (!hasMultipleItems) {
-        setDeliveryAddress({
-          fullName: '',
-          address: '',
-          city: '',
-          postalCode: '',
-          country: ''
-        });
-      }
+      setDeliveryAddress({
+        fullName: '',
+        address: '',
+        city: '',
+        postalCode: '',
+        country: ''
+      });
     } else if (purchaseHash && isPurchaseError) {
       setModal({
         isOpen: true,
