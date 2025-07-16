@@ -8,6 +8,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { CartProvider } from './contexts/CartContext';
 import './index.css';
 
+
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById('root')!).render(
