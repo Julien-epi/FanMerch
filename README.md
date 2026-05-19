@@ -2,7 +2,7 @@
 
 Marketplace token-gated développée en solo dans le cadre du hackathon **Chiliz — Hacking Paris (juillet 2025)**.
 
-Le concept : permettre aux partenaires Socios.com (clubs sportifs) de vendre des produits exclusifs réservés aux détenteurs de leur fan token. L'accès aux articles est conditionné à la détention du token correspondant directement sur la wallet de l'utilisateur — pas de compte, pas de validation manuelle, tout est vérifié on-chain.
+Le concept : permettre aux partenaires Socios.com (clubs sportifs) de vendre des produits exclusifs réservés aux détenteurs de leur fan token. L'accès aux articles est conditionné à la détention du token correspondant directement sur le wallet de l'utilisateur — pas de compte, pas de validation manuelle, tout est vérifié on-chain.
 
 ## Stack
 
